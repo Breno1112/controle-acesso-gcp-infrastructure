@@ -1,7 +1,8 @@
 import {CallableRequest, CallableResponse} from "firebase-functions/https";
-import {UnlockRequest} from "../types/unlock_request.type";
-import {UnlockResponse} from "../types/unlock_response.type";
+import {UnlockRequest} from "./types/unlock_request.type";
+import {UnlockResponse} from "./types/unlock_response.type";
 import {logger} from "firebase-functions";
+import {unlockLock} from "./clients/apigatewayClient";
 
 /**
  * Função responsável por validar se o usuário
@@ -22,9 +23,17 @@ export async function lockHandler(
   if (request.auth?.uid == undefined) {
     return sendUnauthenticatedUser();
   }
+  const apiRrsponse = await unlockLock(request.data.lockId);
+  if (apiRrsponse.success) {
+    return {
+      lockId: request.data.lockId,
+      success: true,
+    };
+  }
   return {
     lockId: request.data.lockId,
-    success: true,
+    success: false,
+    errorMessage: "INTEGRATION_ERROR",
   };
 }
 
