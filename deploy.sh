@@ -1,0 +1,1 @@
+npm --prefix functions run lint --fix && npm --prefix functions run build && firebase deploy --project=lock-unlock-arduino --only functions
