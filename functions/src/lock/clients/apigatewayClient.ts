@@ -15,7 +15,7 @@ export async function unlockLock(lockId: string): Promise<UnlockResponse> {
     if (response.status == 200 && response.data.success) {
       return response.data;
     }
-  } catch (e: any) {
+  } catch (e) {
     logger.error("Erro ao chamar a API para destrancar a porta");
   }
   return {
