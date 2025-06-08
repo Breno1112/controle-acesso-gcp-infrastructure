@@ -3,6 +3,8 @@ import {LockEntity} from "../types/lock_entity.type";
 import {UserEntity} from "../types/user_entity.type";
 import {logger} from "firebase-functions";
 
+admin.initializeApp();
+
 /**
  * Esta função é responsável por salvar o log de
  * destravamento da fechadura X pelo usuário Y
@@ -18,7 +20,6 @@ export async function insertUnlockAccessLog(
 ): Promise<boolean> {
   let result = false;
   try {
-    admin.initializeApp();
     const firestore = admin.firestore();
     const user = await firestore.collection("users").doc(userId).get();
     if (user.exists) {
